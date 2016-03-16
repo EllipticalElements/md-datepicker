@@ -1,10 +1,9 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../elliptical-polymer-behaviors/component-behavior.html">
-<link rel="import" href="../elliptical-jquery-ui/datepicker.html">
-<script src="../moment/moment.js"></script>
+<link rel="import" href="../jquery-ui-import/datepicker.html">
+<link rel="import" href="../moment-import/moment.html">
 
 <dom-module id="md-datepicker">
-    <style></style>
     <template>
         <div class="native">
             <input type="text" class="[[cssClass]]" placeholder="[[placeholder]]" data-type="date"
@@ -90,6 +89,10 @@
             _datePicker:{
                 type:Array,
                 value:null
+            },
+            _state:{
+                type:String,
+                value:null
             }
         },
 
@@ -147,12 +150,13 @@
             var onClose = function () {
                 setTimeout(function () {
                     headerHtml.hide();
+                    context._state=null;
                 }, 300);
             };
 
             var onShow = function (ele, inst) {
                 headerHtml.show();
-                context._onDesktopShow(ele, inst.id)
+                context._onDesktopShow(ele, inst.id);
             };
 
             var onSelect = function (val) {
@@ -168,7 +172,17 @@
 
 
             this.element.on('focus', '[desktop-input]', function () {
-                $('.ui-datepicker').prepend(headerHtml);
+                var datePicker=$('.ui-datepicker');
+                if(!context._state){
+                    setTimeout(function(){
+                        datePicker.prepend(headerHtml);
+                        headerHtml.show();
+                        context._state='visible';
+                    },30);
+                }else {
+                    datePicker.prepend(headerHtml);
+                    headerHtml.show();
+                }
             });
 
             var opts = {

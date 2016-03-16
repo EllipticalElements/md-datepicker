@@ -1,6 +1,6 @@
 {
   "name": "md-datepicker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "authors": [
     "S. Francis"
   ],
@@ -43,9 +43,9 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0.0",
     "elliptical-polymer-behaviors": "~1.0.11",
-    "elliptical-jquery-ui": "~1.11.9",
-    "moment": "~2.11.2",
-    "sass-md-components": "~1.1.0"
+    "sass-md-components": "~1.1.0",
+    "moment-import": "~1.0.0",
+    "jquery-ui-import": "~1.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
