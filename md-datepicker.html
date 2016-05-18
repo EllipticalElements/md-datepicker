@@ -10,6 +10,7 @@
                    value="[[dataValue]]" touch-input />
         </div>
         <div class="desktop">
+            <span class="icon-[[icon]]"></span>
             <input type="text" class="[[cssClass]]" data-type="date" placeholder="[[placeholder]]"
                    value="[[dataValue]]" desktop-input />
 
@@ -82,6 +83,10 @@
                 type:String,
                 value:null
             },
+            icon:{
+                type:String,
+                value:null
+            },
             _id:{
                 type:String,
                 value:null
@@ -101,6 +106,7 @@
         ready: function () {
             var id=(!this.dataId) ? 'dp' + $.utils.string.random() : this.dataId;
             this._id=id;
+            this._setIcon();
             if(this._device.touch){
                 this._initNativeComponent(id);
             }else{
@@ -299,6 +305,27 @@
             this.element.trigger('md.datepicker.select', data);
         },
 
+        _onIconSet: function (span) {
+            span.addClass('prefix');
+        },
+
+        _setIcon:function(){
+            if (!this.icon) return;
+            var span = this.element.find('span');
+            var icon = 'icon-' + this.icon;
+            span.attr('class', '');
+            span.addClass(icon);
+            this._onIconSet(span);
+        },
+
+        _getInput:function(){
+            if (this._device.touch) {
+                return this.element.find('[touch-input]');
+            } else {
+                return this.element.find('[desktop-input]');
+            }
+        },
+
         setDate: function (value) {
             if (this._device.touch) {
                 var input = this.element.find('[touch-input]');
@@ -310,14 +337,20 @@
         },
 
         value: function () {
-            var input;
-            if (this._device.touch) {
-                input = this.element.find('[touch-input]');
-                return input.val();
-            } else {
-                input = this.element.find('[desktop-input]');
-                return input.val();
-            }
+            var input=this._getInput();
+            return input.val();
+        },
+
+        disable:function(){
+            this.setAttribute('disabled','disabled');
+            var input=this._getInput();
+            input[0].setAttribute('disabled','disabled');
+        },
+
+        enable:function(){
+            this.removeAttribute('disabled');
+            var input=this._getInput();
+            input[0].removeAttribute('disabled');
         },
 
         getDate: function () {
